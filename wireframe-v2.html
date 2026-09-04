@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<base href="公共资源素材/">
+<title>西洋骨牌 · Switch式牌桌原型 V2.0</title>
+<style>
+:root{--cyan:#56c8c1;--wood1:#744929;--wood2:#5d351f;--wood3:#8a5a34;--shadow:#24120888}
+*{box-sizing:border-box}
+html,body{margin:0;background:#17191b;color:#eee;font-family:"Microsoft YaHei","PingFang SC",sans-serif}
+body{padding:20px 16px 34px}button{font:inherit;cursor:pointer}
+.page{max-width:1450px;margin:auto}.page-head{display:flex;align-items:end;justify-content:space-between;margin-bottom:12px}.page-head h1{font-size:24px;margin:0}.page-head p{margin:4px 0 0;color:#aaa;font-size:13px}.version{color:#78d8d3!important}
+.statebar{display:flex;align-items:center;gap:8px;margin-bottom:12px}.statebar span{color:#999;font-size:14px;margin-right:3px}.state-btn{height:38px;padding:0 16px;border:1px solid #54595d;border-radius:8px;background:#282b2e;color:#ddd}.state-btn:hover,.state-btn.active{border-color:#74d7d1;background:#377d79;color:#fff}
+.frame-scroll{overflow:auto;padding:14px;border:1px solid #383b3e;border-radius:14px;background:#0d0f10}
+#stage{position:relative;width:1334px;height:750px;overflow:hidden;background:linear-gradient(150deg,#77d9d2 0 48%,#4fc1bb 48% 100%);color:#fff;box-shadow:0 18px 44px #0009}
+.top-ui{position:absolute;z-index:20;left:22px;right:22px;top:16px;height:48px;display:flex;align-items:center;justify-content:space-between;pointer-events:none}.round-back,.help{pointer-events:auto;width:46px;height:46px;border-radius:50%;border:3px solid #fff8;background:#287f7bd9;color:#fff;font-weight:900;font-size:23px;box-shadow:0 4px 0 #145b58}.round-back{font-size:28px}.round-info{padding:8px 18px;border-radius:22px;background:#123f3db8;border:2px solid #ffffff80;text-align:center;box-shadow:0 4px 0 #12302f}.round-info strong{display:block;font-size:18px;line-height:1}.round-info small{display:block;font-size:12px;margin-top:4px;color:#d8fffb}
+.table{position:absolute;left:70px;top:73px;width:1194px;height:630px;border:13px solid #dba969;border-radius:28px;background:repeating-linear-gradient(4deg,transparent 0 34px,#fff1 35px 36px),linear-gradient(100deg,var(--wood2),var(--wood1) 23%,var(--wood3) 46%,#6c4026 70%,#895833);box-shadow:inset 0 0 0 5px #4b2a19,inset 0 0 45px #160a057a,0 12px 30px #173c3a88}
+.table:after{content:"";position:absolute;inset:10px;border:1px solid #e9bd7c66;border-radius:12px;pointer-events:none}
+.player{position:absolute;z-index:12;display:flex;align-items:center;gap:10px}.avatar{position:relative;width:58px;height:58px;border-radius:50%;display:grid;place-items:center;border:4px solid #f7efd9;background:linear-gradient(145deg,#ffd977,#e5783f);box-shadow:0 4px 0 #4d2615,0 6px 13px #1e0e0888;color:#4b2b1c;font-weight:900;font-size:18px}.avatar:after{content:"";position:absolute;inset:5px;border-radius:50%;border:2px dashed #8e4d29aa}.player.current .avatar{box-shadow:0 0 0 6px #72fff4,0 0 24px 10px #35fff07d,0 5px 0 #4d2615}.player-copy{min-width:58px;text-shadow:0 2px 2px #32180f}.player-copy strong{display:block;font-size:15px}.player-copy small{display:block;color:#f5d6a9;font-size:12px;margin-top:2px}
+.p2{left:46px;top:28px}.p3{left:420px;top:28px}.p4{right:46px;top:28px}.me{left:35px;bottom:31px}.me .avatar{background:linear-gradient(145deg,#74ddff,#4a76d7)}
+.mini-hand{display:flex;gap:3px;margin-left:2px}.back{width:24px;height:46px;border-radius:3px;border:2px solid #ede6d6;background:linear-gradient(135deg,#304d77,#233651);box-shadow:0 2px 2px #1b0c06}.back:after{content:"";display:block;margin:4px;height:34px;border:1px dashed #92abc8}
+.turn-toast{position:absolute;z-index:11;left:50%;top:103px;transform:translateX(-50%);padding:6px 15px;border-radius:18px;background:#163c3ad6;border:1px solid #bffaf5aa;color:#eafffd;font-size:14px}
+.boneyard{position:absolute;z-index:8;right:42px;top:115px;width:108px;height:74px;color:#f4ddbd;font-size:12px;text-align:center}.bone-stack{position:relative;height:53px}.bone-back{position:absolute;left:35px;top:0;width:28px;height:50px;border:2px solid #f2e9d5;border-radius:3px;background:#2d4669;box-shadow:4px 4px 0 #1c2d47,8px 8px 0 #111e31}.boneyard strong{display:block;margin-top:2px;font-size:14px;color:#fff}
+.board-path{position:absolute;z-index:5;inset:0}.domino{position:absolute;filter:drop-shadow(0 3px 2px var(--shadow));transition:filter .18s,transform .18s}.domino img{display:block;width:100%;height:100%;object-fit:fill}.domino.v{width:38px;height:76px}.domino.h{width:76px;height:38px}.domino.h img{position:absolute;left:19px;top:-19px;width:38px;height:76px;transform:rotate(90deg)}.domino.h.rev img{transform:rotate(-90deg)}.domino.v.rev img{transform:rotate(180deg)}
+.domino.double{filter:drop-shadow(0 3px 2px var(--shadow)) drop-shadow(0 0 2px #fff7)}.domino.endpoint:before{content:"";position:absolute;inset:-6px;border:2px dashed transparent;border-radius:8px;transition:.18s}.select-mode .domino.endpoint:before{border-color:#89fff5;background:#7efff329;box-shadow:0 0 18px #54fff1}.select-mode .domino.endpoint{filter:drop-shadow(0 0 9px #69fff4)}
+.ghost{opacity:0;transform:translateY(12px);transition:.18s}.place-mode .ghost{opacity:.64;transform:translateY(0);filter:drop-shadow(0 0 9px #6dfff4)}
+.endpoint-tag{position:absolute;z-index:9;padding:4px 9px;border-radius:12px;background:#153f3dd8;border:1px solid #9bf8f0;color:#dffffc;font-size:12px;opacity:0;transition:.18s}.select-mode .endpoint-tag{opacity:1}.tag-a{left:89px;top:133px}.tag-b{left:695px;top:463px}
+.hand{position:absolute;z-index:14;left:256px;right:190px;bottom:24px;height:105px;display:flex;align-items:end;justify-content:center;gap:12px}.hand .domino{position:relative!important;left:auto!important;top:auto!important;width:43px;height:86px;cursor:grab;transform-origin:center bottom}.hand .domino:hover,.hand .domino.selected{transform:translateY(-13px);filter:drop-shadow(0 0 10px #69fff4) drop-shadow(0 5px 2px #2b1009)}.hand .domino.selected:before{content:"拖到发光端点";position:absolute;left:50%;top:-36px;transform:translateX(-50%);white-space:nowrap;padding:5px 10px;border-radius:14px;background:#153f3de8;border:1px solid #a7fff7;color:#eafffd;font-size:12px}
+.result-overlay{position:absolute;z-index:30;inset:0;display:none;background:#15302eb8}.result-card{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:470px;padding:29px 36px;border-radius:18px;border:4px solid #fff5;background:linear-gradient(145deg,#f6e1b1,#e8b96e);box-shadow:0 14px 0 #6f3c22,0 26px 45px #14201f;color:#4a2d1b;text-align:center}.result-card h2{font-size:35px;margin:2px 0 8px}.result-card p{margin:0 0 19px;line-height:1.55}.result-card button{height:44px;padding:0 20px;border:0;border-radius:11px;background:#2e8f8a;color:#fff;font-weight:800;box-shadow:0 4px 0 #185e5a;margin:0 4px}
+.explain{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px}.explain article{border:1px solid #41464a;border-radius:10px;background:#25282b;padding:12px 14px}.explain b{display:block;color:#7ce1db;font-size:14px;margin-bottom:5px}.explain span{color:#bbb;font-size:13px;line-height:1.55}
+@media(max-width:800px){body{padding:8px 5px}.page-head{display:block}.version{margin-top:6px!important}.frame-scroll{padding:5px}.explain{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="page-head"><div><h1>西洋骨牌 · Switch式牌桌原型 V2.0</h1><p>重新按参考视频拆结构：整桌为玩法区，骨牌保持尺寸后转弯延伸。</p></div><p class="version">1334 × 750 · 2D结构原型</p></header>
+  <nav class="statebar" aria-label="原型状态切换"><span>关键状态：</span><button class="state-btn active" data-state="default">正常牌桌</button><button class="state-btn" data-state="select">选择骨牌</button><button class="state-btn" data-state="place">吸附预览</button><button class="state-btn" data-state="result">本局结束</button></nav>
+  <div class="frame-scroll">
+    <main id="stage" aria-label="Switch式四人西洋骨牌牌桌原型">
+      <div class="top-ui"><button class="round-back" aria-label="返回">‹</button><div class="round-info"><strong>西洋骨牌</strong><small>第 1 局 · 先出完手牌获胜</small></div><button class="help" aria-label="规则">?</button></div>
+      <section id="table" class="table" aria-label="完整木质牌桌">
+        <div class="player p2"><div class="avatar">阿竹</div><div class="player-copy"><strong>阿竹</strong><small>剩余 5 张</small></div><div class="mini-hand" aria-label="对手牌背"><i class="back"></i><i class="back"></i><i class="back"></i><i class="back"></i><i class="back"></i></div></div>
+        <div class="player p3 current"><div class="avatar">小禾</div><div class="player-copy"><strong>小禾</strong><small>剩余 4 张</small></div><div class="mini-hand" aria-label="对手牌背"><i class="back"></i><i class="back"></i><i class="back"></i><i class="back"></i></div></div>
+        <div class="player p4"><div class="avatar">老周</div><div class="player-copy"><strong>老周</strong><small>剩余 6 张</small></div><div class="mini-hand" aria-label="对手牌背"><i class="back"></i><i class="back"></i><i class="back"></i><i class="back"></i><i class="back"></i><i class="back"></i></div></div>
+        <div class="turn-toast">小禾的回合</div>
+        <div class="boneyard"><div class="bone-stack"><i class="bone-back"></i></div><strong>牌库 8</strong></div>
+        <div class="board-path" aria-label="不缩放、不叠压的蛇形骨牌链">
+          <div class="domino v endpoint" style="left:126px;top:159px"><img src="../公共资源素材/kenney_domino-pack/PNG/Light/tile_6_6.png" alt="6-6"></div>
+          <div class="domino h" style="left:126px;top:235px"><img src="../公共资源素材/kenney_domino-pack/PNG/Light/tile_5_6.png" alt="6-5"></div>
+          <div class="domino h" style="left:202px;top:235px"><img src="../公共资源素材/kenney_domino-pack/PNG/Light/tile_3_5.png" alt="5-3"></div>
+          <div class="domino v double" style="left:278px;top:217px"><img src="../公共资源素材/kenney_domino-pack/PNG/Light/tile_3_3.png" alt="3-3"></div>
+          <div class="domino h" style="left:316px;top:235px"><img src="../公共资源素材/kenney_domino-pack/PNG/Light/tile_1_3.png" alt="3-1"></div>
+          <div class="domino h rev" style="left:392px;top:235px"><img src="../公共资源素材/kenney_domino-pack/PNG/Light/tile_1_4.png" alt="1-4"></div>
+          <div class="domino h" style="left:468px;top:235px"><img src="../公共资源素材/kenney_domino-pack/PNG/Light/tile_0_4.png" alt="4-0"></div>
+          <div class="domino h rev" style="left:544px;top:235px"><img src="../公共资源素材/kenney_domino-pack/PNG/Light/tile_0_2.png" alt="0-2"></div>
+          <div class="domino h" style="left:620px;top:235px"><img src="../公共资源素材/kenney_domino-pack/PNG/Light/tile_2_6.png" alt="2-6"></div>
+          <div class="domino h rev" style="left:696px;top:235px"><img src="../公共资源素材/kenney_domino-pack/PNG/Light/tile_4_6.png" alt="6-4"></div>
+          <div class="domino v double" style="left:772px;top:217px"><img src="../公共资源素材/kenney_domino-pack/PNG/Light/tile_4_4.png" alt="4-4"></div>
+          <div class="domino h" style="left:810px;top:235px"><img src="../公共资源素材/kenney_domino-pack/PNG/Light/tile_4_5.png" alt="4-5"></div>
+          <div class="domino h rev" style="left:886px;top:235px"><img src="../公共资源素材/kenney_domino-pack/PNG/Light/tile_1_5.png" alt="5-1"></div>
+          <div class="domino h" style="left:962px;top:235px"><img src="../公共资源素材/kenney_domino-pack/PNG/Light/tile_1_2.png" alt="1-2"></div>
+          <div class="domino v" style="left:1038px;top:273px"><img src="../公共资源素材/kenney_domino-pack/PNG/Light/tile_2_5.png" alt="2-5"></div>
+          <div class="domino v rev" style="left:1038px;top:349px"><img src="../公共资源素材/kenney_domino-pack/PNG/Light/tile_3_5.png" alt="5-3"></div>
+          <div class="domino h rev" style="left:962px;top:425px"><img src="../公共资源素材/kenney_domino-pack/PNG/Light/tile_0_3.png" alt="3-0"></div>
+          <div class="domino h" style="left:886px;top:425px"><img src="../公共资源素材/kenney_domino-pack/PNG/Light/tile_0_6.png" alt="0-6"></div>
+          <div class="domino h rev" style="left:810px;top:425px"><img src="../公共资源素材/kenney_domino-pack/PNG/Light/tile_2_6.png" alt="6-2"></div>
+          <div class="domino h endpoint" style="left:734px;top:425px"><img src="../公共资源素材/kenney_domino-pack/PNG/Light/tile_2_4.png" alt="2-4"></div>
+          <div class="domino h ghost" style="left:658px;top:425px"><img src="../公共资源素材/kenney_domino-pack/PNG/Light/tile_4_5.png" alt="4-5 吸附预览"></div>
+          <div class="endpoint-tag tag-a">可接 6</div><div class="endpoint-tag tag-b">可接 4</div>
+        </div>
+        <div class="player me"><div class="avatar">我</div><div class="player-copy"><strong>我</strong><small>剩余 7 张</small></div></div>
+        <div id="hand" class="hand" aria-label="我的骨牌">
+          <div class="domino v" data-tile><img src="../公共资源素材/kenney_domino-pack/PNG/Light/tile_0_1.png" alt="0-1"></div>
+          <div class="domino v" data-tile><img src="../公共资源素材/kenney_domino-pack/PNG/Light/tile_2_3.png" alt="2-3"></div>
+          <div class="domino v" data-tile><img src="../公共资源素材/kenney_domino-pack/PNG/Light/tile_4_5.png" alt="4-5"></div>
+          <div class="domino v" data-tile><img src="../公共资源素材/kenney_domino-pack/PNG/Light/tile_1_1.png" alt="1-1"></div>
+          <div class="domino v" data-tile><img src="../公共资源素材/kenney_domino-pack/PNG/Light/tile_0_5.png" alt="0-5"></div>
+          <div class="domino v" data-tile><img src="../公共资源素材/kenney_domino-pack/PNG/Light/tile_3_4.png" alt="3-4"></div>
+          <div class="domino v" data-tile><img src="../公共资源素材/kenney_domino-pack/PNG/Light/tile_5_5.png" alt="5-5"></div>
+        </div>
+      </section>
+      <div id="result" class="result-overlay"><div class="result-card"><h2>本局结束</h2><p>阿竹率先出完骨牌<br>桌面完整保留，可继续查看牌路。</p><button id="review">返回牌桌</button><button id="again">再来一局</button></div></div>
+    </main>
+  </div>
+  <section class="explain"><article><b>不是横向接龙框</b><span>整张木桌就是落牌区域，没有扑克/麻将原型里的中央长框。</span></article><article><b>牌多就转弯</b><span>骨牌保持可读尺寸，走到边界后形成蛇形路线，不缩放也不互相遮盖。</span></article><article><b>双牌垂直主链</b><span>对子牌横跨当前牌链摆放，一眼能看出西洋骨牌的桌面节奏。</span></article><article><b>四家贴桌边</b><span>头像、剩余数和牌背直接贴边放置，不使用玩家信息卡或麻将式侧栏。</span></article></section>
+</div>
+<script>
+(()=>{
+  const stage=document.getElementById('stage'),table=document.getElementById('table'),result=document.getElementById('result');
+  function setState(name){
+    document.querySelectorAll('.state-btn').forEach(b=>b.classList.toggle('active',b.dataset.state===name));
+    table.classList.toggle('select-mode',name==='select'||name==='place');
+    table.classList.toggle('place-mode',name==='place');
+    result.style.display=name==='result'?'block':'none';
+    document.querySelectorAll('#hand [data-tile]').forEach(t=>t.classList.remove('selected'));
+    if(name==='select'||name==='place')document.querySelectorAll('#hand [data-tile]')[2].classList.add('selected');
+  }
+  document.querySelectorAll('.state-btn').forEach(b=>b.addEventListener('click',()=>setState(b.dataset.state)));
+  document.querySelectorAll('#hand [data-tile]').forEach(t=>t.addEventListener('click',()=>{document.querySelectorAll('#hand [data-tile]').forEach(x=>x.classList.remove('selected'));t.classList.add('selected');table.classList.add('select-mode')}));
+  document.getElementById('review').addEventListener('click',()=>setState('default'));
+  document.getElementById('again').addEventListener('click',()=>setState('default'));
+  function fitPreview(){const viewport=document.querySelector('.frame-scroll'),availableW=Math.max(320,viewport.clientWidth-28),availableH=Math.max(320,window.innerHeight-stage.getBoundingClientRect().top-12),scale=Math.min(1,availableW/1334,availableH/750);stage.style.transformOrigin='top left';stage.style.transform=`scale(${scale})`;stage.style.marginRight=`${1334*(scale-1)}px`;stage.style.marginBottom=`${750*(scale-1)}px`}
+  setState('default');fitPreview();window.addEventListener('resize',fitPreview);
+})();
+</script>
+</body>
+</html>

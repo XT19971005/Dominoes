@@ -1,0 +1,342 @@
+schema: game-ue-requirement-ledger/v1
+
+feature:
+  id: FEAT-DOMINO-2D-V1
+  name: 骨牌对战
+  version: V2.1-player-count
+  owner: 产品待确认
+  source_documents:
+    - 用户聊天：改为 2D 骨牌牌桌
+    - https://www.bilibili.com/video/BV1co4y1z7FQ/
+    - https://kenney.nl/assets
+    - C:\Users\tuyou\Desktop\kenney_domino-pack.zip
+    - D:\@谢涛\@TUSY\麻将\2026_8_24AI\2026_9_4游戏\公共资源素材\kenney_domino-pack
+  target_figma:
+    file_key: ""
+    page_id: ""
+    page_name: ""
+    section_id: ""
+  delivery_mode: prototype
+  platform: Web / HTML 2D prototype
+  viewport: 1334x750
+  orientation: landscape
+  safe_area: 待确认
+  min_font_size: 24px（本地原型玩家文字）
+  font_family: Microsoft YaHei / PingFang SC（原型占位）
+
+chat_updates:
+  - id: CHAT-001
+    timestamp: 2026-09-04
+    wording: supplement
+    content: 参考 Switch《西洋骨牌》牌桌关系；改为 2D 双人 / 三人牌桌原型，先验证横向牌链与拖拽流程。
+    supersedes: []
+    affected_requirements: [REQ-001, REQ-002, REQ-003]
+    version_impact: structural
+  - id: CHAT-002
+    timestamp: 2026-09-04
+    wording: supplement
+    content: 双人或三人本地 AI 对战；素材使用用户目录中的 Kenney Domino Pack 2D 图片，界面素材方向限定 Kenney Interface。
+    supersedes: [CHAT-001]
+    affected_requirements: [REQ-001, REQ-002, REQ-003, REQ-004]
+    version_impact: structural
+  - id: CHAT-003
+    timestamp: 2026-09-04
+    wording: correction
+    content: 旧版仍像扑克/麻将换皮；改为参考视频中的整桌蛇形骨牌路径、上沿对手、左下玩家席位，人数可选为双人或三人，牌多时转弯而非缩放或叠压。
+    supersedes: [CHAT-001, CHAT-002]
+    affected_requirements: [REQ-003, REQ-004, REQ-005]
+    version_impact: structural
+
+source_policy:
+  confirmed_user_request:
+    - 新建独立骨牌玩法
+    - 使用 2D Web 原型方向
+    - Kenney Domino Pack 2D 图片与 Kenney Interface/UI 素材
+    - 先设计原型图
+  formal_document_body: []
+  live_reference_screens: []
+  reference_figma: []
+  embedded_ai_html: []
+  unverified_images: []
+
+confidence:
+  confirmed: [REQ-001, REQ-002, REQ-003, REQ-009]
+  assumption: [REQ-004, REQ-005]
+  pending: [REQ-006, REQ-007, REQ-008]
+  pending-conflict: []
+  superseded: []
+
+requirements:
+  - id: REQ-001
+    source_refs: [CHAT-001]
+    type: goal
+    confidence: confirmed
+    statement: 新建独立骨牌对战玩法，先用 2D Web 原型验证牌桌与交互。
+    player_visible_result: 有独立的骨牌对战入口和牌桌。
+    acceptance: 原型不依赖旧游戏页面，入口、牌桌、结果均可审阅。
+    affected_states: [ST-00, ST-01, ST-04]
+    owner: 产品 / UE
+  - id: REQ-002
+    source_refs: [CHAT-001, https://kenney.nl/assets, https://quaternius.com/index.html]
+    type: visual
+    confidence: confirmed
+    statement: 骨牌使用 Kenney Domino Pack 的 Light、Dark、Gingerbread、Hearts、Stars 五套 2D PNG；界面只从 Kenney Interface/UI 资源方向筛选，原型不混用 3D 素材。
+    player_visible_result: 牌面、牌背、桌面、头像均有明确资源槽位。
+    acceptance: 玩家业务画面不塞入高保真材质；缺失资源标为占位。
+    affected_states: [ST-00, ST-01, ST-02, ST-03, ST-04]
+    owner: UE / UI / 美术
+  - id: REQ-009
+    source_refs: [CHAT-002, https://kenney.nl/assets/tag:interface]
+    type: visual
+    confidence: confirmed
+    statement: 头像采用 2D 圆形座位标记；界面图标和按钮素材从 Kenney Interface/UI 方向筛选。
+    player_visible_result: 当前模式中的每个座位都有清晰的头像标记，不遮挡牌桌和牌链。
+    acceptance: 不引入 3D 角色或外部 IP，缺失头像用占位标注。
+    affected_states: [ST-00, ST-01, ST-04]
+    owner: 产品 / UI / 美术
+  - id: REQ-003
+    source_refs: [CHAT-003, https://www.bilibili.com/video/BV1co4y1z7FQ/]
+    type: flow
+    confidence: assumption
+    statement: 牌桌采用参考视频式席位：玩家在左下；双人时 1 名对手顶部居中，三人时 2 名对手沿上边左右排列，信息直接贴桌边。
+    player_visible_result: 中央牌路不被左右玩家卡片切断，当前模式的对手牌数和牌背仍清晰可辨。
+    acceptance: 入口可选择双人或三人，牌桌显示与人数一致，不出现隐藏座位或人数误导。
+    affected_states: [ST-01, ST-02, ST-03]
+    owner: 产品
+  - id: REQ-004
+    source_refs: [用户此前关于上下左右连接的聊天]
+    type: goal
+    confidence: assumption
+    statement: 骨牌在蛇形牌链的两个真实端点连接，相同点数才可接；到达桌边后转弯延伸。
+    player_visible_result: 选牌后两个链端高亮，普通牌顺着路径，双牌垂直主链。
+    acceptance: 牌面保持可读尺寸，不整体缩小、不压叠；点击手牌不会直接出牌。
+    affected_states: [ST-02, ST-03]
+    owner: 产品 / 程序
+  - id: REQ-005
+    source_refs: [用户此前关于拖牌手感的聊天]
+    type: visual
+    confidence: assumption
+    statement: 选牌、拖拽、接点高亮、落牌反馈需要清晰可见。
+    player_visible_result: 选中的牌上浮，接点扩大，落牌后显示吸附反馈。
+    acceptance: 操作反馈不依赖小字，关键反馈使用大号标签或气泡。
+    affected_states: [ST-02, ST-03]
+    owner: UE / 程序
+  - id: REQ-006
+    source_refs: []
+    type: technical
+    confidence: pending
+    statement: 当前原型锁定横屏 1334×750 2D 视图；不进入 3D 相机实现。
+    player_visible_result: ""
+    acceptance: 实现前锁定横屏/竖屏及相机方案。
+    affected_states: [ST-00, ST-01]
+    owner: 产品
+  - id: REQ-007
+    source_refs: []
+    type: goal
+    confidence: pending
+    statement: 计分和结束条件待确认。
+    player_visible_result: ""
+    acceptance: 实现前形成可执行规则表。
+    affected_states: [ST-03, ST-04]
+    owner: 产品
+  - id: REQ-008
+    source_refs: []
+    type: technical
+    confidence: pending
+    statement: 本轮使用本地 AI 占位；联网房间不在原型范围。
+    player_visible_result: ""
+    acceptance: 实现前锁定对手来源和断线恢复策略。
+    affected_states: [ST-01, ST-03, ST-04]
+    owner: 产品 / 程序
+
+business_rules:
+  server_authoritative_data: [待确认]
+  client_display_only_data: [牌桌视觉、接点高亮、拖拽状态]
+  economy_and_assets: [本原型不涉及]
+  price_and_purchase: [不适用]
+  reward_and_probability: [不适用]
+  time_and_countdown: [对手延迟仅为原型反馈，不代表正式数值]
+  qualification_and_limits: [待确认]
+  ab_test: []
+  analytics: [待实现阶段补充]
+  compliance_copy: [不含赌博、押注或现金奖励]
+  recovery_and_idempotency: [待确认]
+
+states:
+  - id: ST-00
+    name: 入口
+    source_refs: [REQ-001]
+    confidence: confirmed
+    entry_condition: 打开原型页面
+    visible_information: [玩法名称, 双人 / 三人模式卡, 开始对局]
+    enabled_actions: [开始体验]
+    disabled_actions: [在线对局（本版不包含）]
+    immediate_feedback: [进入牌桌]
+    data_changes: []
+    next_states: [ST-01]
+    recovery: [返回入口]
+    player_frame: true
+    annotation_refs: []
+    figma: {page_id: "", section_id: "", node_id: "", link: ""}
+  - id: ST-01
+    name: 牌桌默认
+    source_refs: [REQ-003, REQ-004]
+    confidence: confirmed
+    entry_condition: 点击开始对局
+    visible_information: [上沿对手牌背, 整桌蛇形牌链, 我的手牌, 牌库, 连接规则]
+    enabled_actions: [选择手牌, 提示, 跳过, 查看结果, 规则]
+    disabled_actions: []
+    immediate_feedback: [请选择手牌，拖到发光端点]
+    data_changes: []
+    next_states: [ST-02, ST-04]
+    recovery: [返回入口]
+    player_frame: true
+    annotation_refs: []
+    figma: {page_id: "", section_id: "", node_id: "", link: ""}
+  - id: ST-02
+    name: 选牌与可接点
+    source_refs: [REQ-004, REQ-005]
+    confidence: confirmed
+    entry_condition: 点击一张手牌
+    visible_information: [选中牌上浮, 两个真实链端高亮, 接入点数标签]
+    enabled_actions: [点击端点, 拖拽到端点, 取消选择]
+    disabled_actions: [直接点击手牌出牌]
+    immediate_feedback: [端点扩大和高亮]
+    data_changes: []
+    next_states: [ST-03, ST-01]
+    recovery: [取消选择]
+    player_frame: true
+    annotation_refs: []
+    figma: {page_id: "", section_id: "", node_id: "", link: ""}
+  - id: ST-03
+    name: 落牌反馈
+    source_refs: [REQ-004, REQ-005]
+    confidence: confirmed
+    entry_condition: 选中牌并拖到有效端点
+    visible_information: [新牌吸附到牌链, 落牌成功, 当前玩家头像高亮]
+    enabled_actions: [等待对手, 跳过]
+    disabled_actions: [重复落牌]
+    immediate_feedback: [牌桌位置更新]
+    data_changes: [我的手牌减一（示意）]
+    next_states: [ST-01, ST-04]
+    recovery: [异常时回到牌桌默认]
+    player_frame: true
+    annotation_refs: []
+    figma: {page_id: "", section_id: "", node_id: "", link: ""}
+  - id: ST-04
+    name: 结果
+    source_refs: [REQ-001]
+    confidence: assumption
+    entry_condition: 点击查看结果
+    visible_information: [结果卡, 返回牌桌, 再来一局]
+    enabled_actions: [返回牌桌, 再来一局]
+    disabled_actions: []
+    immediate_feedback: [保留底层牌桌，不直接重置]
+    data_changes: []
+    next_states: [ST-01, ST-00]
+    recovery: [返回牌桌]
+    player_frame: true
+    annotation_refs: []
+    figma: {page_id: "", section_id: "", node_id: "", link: ""}
+
+reuse_map:
+  - object: Kenney domino PNG tiles
+    category: local-asset
+    semantic: 骨牌点数牌面
+    source_name: Kenney Domino Pack
+    source_library_key: ""
+    source_component_key: ""
+    source_updated_at: ""
+    source_file_path: D:\@谢涛\@TUSY\麻将\2026_8_24AI\2026_9_4游戏\05_骨牌对战_原型设计\公共资源素材\kenney_domino-pack\PNG\{Light,Dark,Gingerbread,Hearts,Stars}
+    source_verified_at: 2026-09-04
+    source_variant_properties: {themes: [Dark, Gingerbread, Hearts, Stars], values: 0-6}
+    source_node_id: ""
+    nested_dependencies: []
+    reason: 当前 2D 原型已直接引用 PNG 图片，按 a/b 自动旋转方向。
+    affected_states: [ST-00, ST-01, ST-02, ST-03]
+    blocked_reason: ""
+  - object: Quaternius character pack
+    category: superseded
+    semantic: 玩家/对手角色
+    source_name: Ultimate Animated Character Pack
+    source_library_key: ""
+    source_component_key: ""
+    source_updated_at: 2019-11
+    source_file_path: https://quaternius.com/packs/ultimatedanimatedcharacter.html
+    source_verified_at: 2026-09-04
+    source_variant_properties: {models: 50+, formats: [FBX, OBJ, Blend], license: CC0}
+    source_node_id: ""
+    nested_dependencies: []
+    reason: 2D 原型阶段不使用 3D 角色，保留为后续可选参考。
+    affected_states: [ST-00, ST-01, ST-04]
+    blocked_reason: 当前方向已改为 2D。
+  - object: Quaternius furniture table
+    category: superseded
+    semantic: 3D 牌桌与座位
+    source_name: Ultimate Furniture Pack
+    source_library_key: ""
+    source_component_key: ""
+    source_updated_at: 2019-03
+    source_file_path: https://quaternius.com/packs/ultimatefurniture.html
+    source_verified_at: 2026-09-04
+    source_variant_properties: {formats: [FBX, OBJ, Blend], license: CC0}
+    source_node_id: ""
+    nested_dependencies: []
+    reason: 2D 原型用 CSS 木桌表现，不接入 3D 桌子模型。
+    affected_states: [ST-00, ST-01, ST-04]
+    blocked_reason: 当前方向已改为 2D。
+  - object: Kenney UI Pack
+    category: local-asset
+    semantic: 面板、按钮、提示框
+    source_name: UI Pack
+    source_library_key: ""
+    source_component_key: ""
+    source_updated_at: 2024-06
+    source_file_path: D:\@谢涛\@TUSY\麻将\2026_8_24AI\2026_9_4游戏\05_骨牌对战_原型设计\公共资源素材\kenney_interface\Vector\{Blue,Green}
+    source_verified_at: 2026-09-04
+    source_variant_properties: {files: 430, license: CC0}
+    source_node_id: ""
+    nested_dependencies: []
+    reason: 页面已直接引用公共目录中的按钮 SVG 和交互音效；界面保持固定，不随骨牌皮肤变化。
+    affected_states: [ST-00, ST-01, ST-02, ST-03, ST-04]
+    blocked_reason: ""
+  - object: 牌桌与头像
+    category: one-off-wireframe
+    semantic: 桌面、座位、头像占位
+    source_name: 用户现有牌桌风格（待指定）
+    source_library_key: ""
+    source_component_key: ""
+    source_updated_at: ""
+    source_file_path: ""
+    source_verified_at: ""
+    source_variant_properties: {}
+    source_node_id: ""
+    nested_dependencies: []
+    reason: 本轮低保真结构占位。
+    affected_states: [ST-00, ST-01, ST-04]
+    blocked_reason: 最终视觉方向待确认。
+
+button_contract:
+  enabled: false
+  applicability: not_applicable
+  source_lock_status: unverified
+
+handoff:
+  product_open_questions: [REQ-006, REQ-007, REQ-008]
+    engineering_notes: [2D DOM/CSS 原型；正式客户端可迁移到 Cocos 或 UE UMG，保留图片坐标和状态机]
+  art_assets: [Kenney Domino Pack 2D PNG, Kenney Interface/UI Pack, 牌背占位, 音效占位]
+  qa_cases: [选牌不误出牌, 双人 / 三人席位切换, 两个链端可见, 蛇形牌路不缩放不叠压, 不同人数席位不遮挡, 结果回看不重排底层]
+  analytics_events: [实现阶段补充]
+  known_limitations: [规则与计分未定, UI 仍是 2D 原型，Kenney Interface 下载包尚未接入]
+
+qa:
+  hard_failures: []
+  weighted_score: null
+  status: in_review
+  independent_reviewer: 待用户确认
+  reviewed_at: 2026-09-04
+  evidence:
+    screenshots: [index.html 本地预览（Switch 式 2D 双人 / 三人桌）]
+    metadata_checks: [1334x750 stage]
+    viewport_checks: [整桌完整可见、蛇形牌路与手牌不重叠、说明层不遮挡牌链]
+    button_checks: [开始体验、规则、提示、跳过、查看结果、返回牌桌、再来一局]
